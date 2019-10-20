@@ -1,6 +1,9 @@
-import random
-import time
-from tkinter import Tk, Button, DISABLED
+try:
+    import random
+    import time
+    from tkinter import Tk, Button, DISABLED
+except:
+    print("Sorry, it looks like you don't have the right modules and code to run this game.")
 
 def show_symbol(x, y):
     global first

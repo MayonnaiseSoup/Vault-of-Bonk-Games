@@ -1,109 +1,69 @@
-import pygame
- 
-# --- Globals ---
-# Colors
-BLACK = (51, 255, 51)
-WHITE = (235, 64, 52)
- 
-# Set the width and height of each snake segment
-segment_width = 15
-segment_height = 15
-# Margin between each segment
-segment_margin = 3
- 
-# Set initial speed
-x_change = segment_width + segment_margin
-y_change = 0
- 
- 
-class Segment(pygame.sprite.Sprite):
-    """ Class to represent one segment of the snake. """
-    # -- Methods
-    # Constructor function
-    def __init__(self, x, y):
-        # Call the parent's constructor
-        super().__init__()
- 
-        # Set height, width
-        self.image = pygame.Surface([segment_width, segment_height])
-        self.image.fill(WHITE)
- 
-        # Make our top-left corner the passed-in location.
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
- 
-# Call this function so the Pygame library can initialize itself
-pygame.init()
- 
-# Create an 800x600 sized screen
-screen = pygame.display.set_mode([800, 600])
- 
-# Set the title of the window
-pygame.display.set_caption('Snake Example')
- 
-allspriteslist = pygame.sprite.Group()
- 
-# Create an initial snake
-snake_segments = []
-for i in range(15):
-    x = 250 - (segment_width + segment_margin) * i
-    y = 30
-    segment = Segment(x, y)
-    snake_segments.append(segment)
-    allspriteslist.add(segment)
- 
- 
-clock = pygame.time.Clock()
-done = False
- 
-while not done:
- 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done = True
- 
-        # Set the speed based on the key pressed
-        # We want the speed to be enough that we move a full
-        # segment, plus the margin.
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                x_change = (segment_width + segment_margin) * -1
-                y_change = 0
-            if event.key == pygame.K_RIGHT:
-                x_change = (segment_width + segment_margin)
-                y_change = 0
-            if event.key == pygame.K_UP:
-                x_change = 0
-                y_change = (segment_height + segment_margin) * -1
-            if event.key == pygame.K_DOWN:
-                x_change = 0
-                y_change = (segment_height + segment_margin)
- 
-    # Get rid of last segment of the snake
-    # .pop() command removes last item in list
-    old_segment = snake_segments.pop()
-    allspriteslist.remove(old_segment)
- 
-    # Figure out where new segment will be
-    x = snake_segments[0].rect.x + x_change
-    y = snake_segments[0].rect.y + y_change
-    segment = Segment(x, y)
- 
-    # Insert new segment into the list
-    snake_segments.insert(0, segment)
-    allspriteslist.add(segment)
- 
-    # -- Draw everything
-    # Clear screen
-    screen.fill(BLACK)
- 
-    allspriteslist.draw(screen)
- 
-    # Flip screen
-    pygame.display.flip()
- 
-    # Pause
-    clock.tick(5)
- 
-pygame.quit()
+"""Snake, classic arcade game.
+
+Excercises
+
+1. How do you make the snake faster or slower?
+2. How can you make the snake go around the edges?
+3. How would you move the food?
+4. Change the snake to respond to arrow keys.
+
+"""
+
+try:
+    from turtle import *
+    from random import randrange
+    from freegames import square, vector
+except:
+    print("Sorry, it looks like you don't have the right modules and code to run this game.")
+
+food = vector(0, 0)
+snake = [vector(10, 0)]
+aim = vector(0, -10)
+
+def change(x, y):
+    "Change snake direction."
+    aim.x = x
+    aim.y = y
+
+def inside(head):
+    "Return True if head inside boundaries."
+    return -200 < head.x < 190 and -200 < head.y < 190
+
+def move():
+    "Move snake forward one segment."
+    head = snake[-1].copy()
+    head.move(aim)
+
+    if not inside(head) or head in snake:
+        square(head.x, head.y, 9, 'red')
+        update()
+        return
+
+    snake.append(head)
+
+    if head == food:
+        print('Snake:', len(snake))
+        food.x = randrange(-15, 15) * 10
+        food.y = randrange(-15, 15) * 10
+    else:
+        snake.pop(0)
+
+    clear()
+
+    for body in snake:
+        square(body.x, body.y, 9, 'black')
+
+    square(food.x, food.y, 9, 'green')
+    update()
+    ontimer(move, 100)
+
+setup(420, 420, 370, 0)
+hideturtle()
+tracer(False)
+listen()
+onkey(lambda: change(10, 0), 'Right')
+onkey(lambda: change(-10, 0), 'Left')
+onkey(lambda: change(0, 10), 'Up')
+onkey(lambda: change(0, -10), 'Down')
+move()
+done()

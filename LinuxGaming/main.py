@@ -1,3 +1,5 @@
+
+
 while True:
 
     response = input("What game would you like to play?: ")
@@ -21,3 +23,20 @@ while True:
 
     if response == "Snake":
         import snake
+
+
+
+    if response == "Tic Tac Toe":
+        import tictactoe
+
+
+    if response == "Pacman":
+        import pacman
+
+
+    if response == "Tiles":
+        import tiles
+
+
+    if response == "Connect 4":
+        import connect

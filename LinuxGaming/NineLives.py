@@ -1,4 +1,7 @@
-import random
+try:
+    import random
+except:
+    print("Sorry, it looks like you don't have the right modules and code to run this game.")
 
 
 lives = 9

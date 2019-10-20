@@ -1,5 +1,8 @@
-import turtle as t
-import random
+try:
+    import turtle as t
+    import random
+except:
+    print("Sorry, it looks like you don't have the right modules and code to run this game.")
 
 t.bgcolor("yellow")
 caterpillar =  t.Turtle()
@@ -121,4 +124,4 @@ t.onkey(move_right, "Right")
 t.onkey(move_down, "Down")
 t.onkey(move_left, "Left")
 t.listen()
-t.mainloop()
+t.mainloop()   

@@ -1,4 +1,7 @@
-# GamingLinux
+# Vault of Bonk Games
+
+![alt text](https://github.com/MayonnaiseSoup/Vault-of-Bonk-Games/blob/master/BonkLogo.png?raw=true)
+
 
 ## The basics
 
